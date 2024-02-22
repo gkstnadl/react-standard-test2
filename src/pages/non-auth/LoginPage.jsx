@@ -8,6 +8,15 @@ const LoginPage = () => {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
 
+  const onChangeHandler = (e) => {
+    const { name, value } = e.target;
+    if (name === "id") {
+      setId(value);
+    } else if (name === "password") {
+      setPassword(value);
+    }
+  };
+
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -15,10 +24,12 @@ const LoginPage = () => {
         id,
         password,
       });
+      const { accessToken, userId, nickname } = data;
+
       alert("로그인에 성공하였습니다. 메인 페이지로 이동할게요.");
-      // localStorage.setItem("accessToken", accessToken);
-      // localStorage.setItem("userId", userId);
-      // localStorage.setItem("nickname", nickname);
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("userId", userId);
+      localStorage.setItem("nickname", nickname);
       navigate("/");
     } catch (error) {
       alert(error.message);
@@ -31,15 +42,20 @@ const LoginPage = () => {
       <h1>Login</h1>
       <p>Login page</p>
 
-      <form onSubmit={async (e) => {}}>
+      <form onSubmit={onSubmitHandler}>
         <div>
           <label htmlFor="id">id</label>
-          <input />
+          <input name="id" value={id} onChange={onChangeHandler} />
         </div>
 
         <div>
           <label htmlFor="password">Password</label>
-          <input />
+          <input
+            type="password"
+            name="password"
+            value={password}
+            onChange={onChangeHandler}
+          />
         </div>
 
         <button type="submit">Login</button>

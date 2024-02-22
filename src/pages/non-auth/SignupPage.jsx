@@ -9,10 +9,21 @@ const SignupPage = () => {
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
 
+  const onChangeHandler = (e) => {
+    const { name, value } = e.target;
+    if (name === "id") {
+      setId(value);
+    } else if (name === "password") {
+      setPassword(value);
+    } else if (name === "nickname") {
+      setNickname(value);
+    }
+  };
+
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await authApi.post("/signup", {
+      const { data } = await authApi.post("/register", {
         id,
         password,
         nickname,
@@ -33,16 +44,21 @@ const SignupPage = () => {
       <form onSubmit={onSubmitHandler}>
         <div>
           <label htmlFor="id">id</label>
-          <input />
+          <input name="id" value={id} onChange={onChangeHandler} />
         </div>
         <div>
           <label htmlFor="nickname">nickname</label>
-          <input />
+          <input name="nickname" value={nickname} onChange={onChangeHandler} />
         </div>
 
         <div>
           <label htmlFor="password">Password</label>
-          <input />
+          <input
+            type="password"
+            name="password"
+            value={password}
+            onChange={onChangeHandler}
+          />
         </div>
 
         <button type="submit">Signup</button>

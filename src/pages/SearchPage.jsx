@@ -7,14 +7,28 @@ function SearchPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [posts, setPosts] = useState([]);
 
-  const userId = null;
+  const userId = searchParams.get("userId");
 
   // URL의 쿼리 스트링을 변경하는 함수
-  const updateSearch = (userId) => {};
+  const updateSearch = (userId) => {
+    setSearchParams({ userId });
+  };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await postsAxios.get("/");
+        setPosts(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchPosts();
+  }, []);
 
-  const filteredPosts = null;
+  const filteredPosts = posts.filter(
+    (post) => post.writerUserId.toString() === userId
+  );
 
   return (
     <div>
